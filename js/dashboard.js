@@ -19,17 +19,17 @@ fetch(API_URL+`?action=dashboard&bulan=${bulan}&tahun=${tahun}`)
 
 .then(d=>{
 
-document.getElementById("anggota").innerText=d.totalAnggota;
-document.getElementById("bayar").innerText=d.sudahBayar;
-document.getElementById("belum").innerText=d.belumBayar;
+anggota.innerText=d.totalAnggota;
+sudah.innerText=d.sudah;
+belum.innerText=d.belum;
 
-document.getElementById("iuran").innerText=d.iuran;
-document.getElementById("pengeluaran").innerText=d.pengeluaran;
-document.getElementById("saldo").innerText=d.saldo;
+iuran.innerText=d.iuran;
+pengeluaran.innerText=d.pengeluaran;
+saldo.innerText=d.saldo;
 
-new Chart(document.getElementById("chart"),{
+new Chart(chart,{
 
-type:"pie",
+type:"doughnut",
 
 data:{
 
@@ -44,6 +44,24 @@ data:[d.iuran,d.pengeluaran]
 }
 
 });
+
+});
+
+fetch(API_URL+`?action=belum&bulan=${bulan}&tahun=${tahun}`)
+
+.then(r=>r.json())
+
+.then(data=>{
+
+let html="";
+
+data.forEach(d=>{
+
+html+=`<li>${d.nama}</li>`;
+
+});
+
+listBelum.innerHTML=html;
 
 });
 
@@ -63,7 +81,7 @@ html+=`
 
 <td>${d.tanggal}</td>
 <td>${d.jenis}</td>
-<td>${d.keterangan}</td>
+<td>${d.ket}</td>
 <td>${d.jumlah}</td>
 
 </tr>
@@ -72,7 +90,7 @@ html+=`
 
 });
 
-document.getElementById("table").innerHTML=html;
+table.innerHTML=html;
 
 });
 
